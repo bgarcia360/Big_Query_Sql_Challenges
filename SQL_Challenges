@@ -1,0 +1,4 @@
+--Day 1
+Select *
+FROM `bigquery-public-data.austin_bikeshare.bikeshare_trips` 
+
