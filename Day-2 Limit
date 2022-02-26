@@ -1,0 +1,14 @@
+--Top 100 by date:
+
+Select  *
+FROM `bigquery-public-data.austin_bikeshare.bikeshare_trips` 
+order by start_time desc
+Limit 100
+
+
+--The bottom 100 by date:
+
+Select  *
+FROM `bigquery-public-data.austin_bikeshare.bikeshare_trips` 
+order by start_time 
+Limit 100
