@@ -1,0 +1,8 @@
+--How would you filter a query with aggregated function?
+
+select start_station_name,count(*) as total,max(duration_minutes) as max_duration,min(duration_minutes) as min_duration, avg(duration_minutes) as avg_durtion,sum(duration_minutes) as sum_duration
+FROM `bigquery-public-data.austin_bikeshare.bikeshare_trips` 
+where extract (year from start_time) = 2021
+group by start_station_name
+having avg_durtion <= 30
+order by avg_durtion 
