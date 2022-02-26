@@ -1,0 +1,54 @@
+--How to deal with divide by zero errors in Big Query or SQL?
+
+--Here is the syntax for that will give you divide by zero error:
+WITH vars AS (
+  SELECT (select count(*)FROM `bigquery-public-data.austin_bikeshare.bikeshare_trips` 
+where extract (year from start_time) = 2021) as cte_total),--cet to get total rental for 2021
+
+ zero as (---cte to set anything below 1000 to zero to show error
+select start_station_name, case when count(*) < 1000 then 0
+else count(*)
+end as zero_total
+from `bigquery-public-data.austin_bikeshare.bikeshare_trips` 
+where extract (year from start_time) = 2021
+
+group by start_station_name )
+
+select start_station_name, (select cte_total from vars)/zero_total as total
+from zero
+
+-----Using case statement:
+
+WITH vars AS (
+  SELECT (select count(*)FROM `bigquery-public-data.austin_bikeshare.bikeshare_trips` 
+where extract (year from start_time) = 2021) as cte_total),--cet to get total rental for 2021
+
+ zero as (---cte to set anything below 1000 to zero to show error
+select start_station_name, case when count(*) < 1000 then 0
+else count(*)
+end as zero_total
+from `bigquery-public-data.austin_bikeshare.bikeshare_trips` 
+where extract (year from start_time) = 2021
+
+group by start_station_name )
+
+select start_station_name, case when zero_total = 0 then null else (select cte_total from vars)/zero_total end as total
+from zero
+
+
+-------------------Using SAFE_DIVIDE:
+WITH vars AS (
+  SELECT (select count(*)FROM `bigquery-public-data.austin_bikeshare.bikeshare_trips` 
+where extract (year from start_time) = 2021) as cte_total),--cet to get total rental for 2021
+
+ zero as (---cte to set anything below 1000 to zero to show error
+select start_station_name, case when count(*) < 1000 then 0
+else count(*)
+end as zero_total
+from `bigquery-public-data.austin_bikeshare.bikeshare_trips` 
+where extract (year from start_time) = 2021
+
+group by start_station_name )
+
+select start_station_name, SAFE_DIVIDE((select cte_total from vars),zero_total) as total
+from zero
