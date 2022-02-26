@@ -1,0 +1,11 @@
+--How do you change a column name in SQL?
+
+Select  subscriber_type as subscriber, count(*) as total
+
+FROM `bigquery-public-data.austin_bikeshare.bikeshare_trips` as bt
+
+group by subscriber
+
+having total <200
+
+order by total
