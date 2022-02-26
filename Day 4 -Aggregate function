@@ -1,0 +1,6 @@
+--What are SQL l aggregate functions?
+Select subscriber_type,count(*) as total,max(duration_minutes) as max_duration,min(duration_minutes) as min_duration, avg(duration_minutes) as avg_durtion,sum(duration_minutes) as sum_duration
+FROM `bigquery-public-data.austin_bikeshare.bikeshare_trips` 
+where duration_minutes !=0
+group by subscriber_type
+order by avg_durtion desc
