@@ -1,0 +1,8 @@
+--Can you use math operation on aggregated function?
+
+select start_station_name,count(*) as total, count(*)/(select count(*)FROM `bigquery-public-data.austin_bikeshare.bikeshare_trips` 
+where extract (year from start_time) = 2021)as percentange,
+FROM `bigquery-public-data.austin_bikeshare.bikeshare_trips` 
+where extract (year from start_time) = 2021
+group by start_station_name
+order by percentange desc
