@@ -1,0 +1,9 @@
+
+--How do you use a window function to calculate the percentage at table level.
+
+select start_station_name,count(*) as Number_of_rental, sum(count(*)) over () as total,
+round(count(*)/sum(count(*)) over(),4) as Percentage
+FROM `bigquery-public-data.austin_bikeshare.bikeshare_trips` 
+where extract (year from start_time) = 2021
+group by start_station_name
+order by Percentage desc
