@@ -1,0 +1,8 @@
+---How do you find the first or nth record from a group of records?
+
+with cte as (select *,row_number() over(partition  by bikeid order by start_time) as row_n 
+FROM `bigquery-public-data.austin_bikeshare.bikeshare_trips` )
+
+select *
+from cte
+where row_n =1
