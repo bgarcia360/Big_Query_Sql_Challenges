@@ -19,3 +19,5 @@ Pivot(sum(total) for start_station_name in ('_64RaineySt','_1301ToomeyRoad','_27
 
 -- Give Year and total for each address
 --https://stackoverflow.com/questions/67479396/the-new-pivot-function-in-bigquery
+--select string_agg(concat(concat("'",replace(replace(replace(replace(concat("_",address),' ',''),'.',''),'/',''),'&','')),"'"))
+--from bigquery-public-data.austin_bikeshare.bikeshare_stations
