@@ -1,0 +1,19 @@
+--Copy and paste in Google Big Query Console https://console.cloud.google.com/bigquery
+
+--Common Table express to aggregate the total bike check out starting address
+--Address change to have work with pivot opprator otherwise error would occure due to spaceial characters 
+
+--CTE give Start_station_name, Year, Total 
+with cte as ( Select  replace(replace(replace(replace(concat("_",address),' ',''),'.',''),'/',''),'&','') as start_station_name ,extract (year from start_time) as year,  count(*) as total
+from  `bigquery-public-data.austin_bikeshare.bikeshare_trips` bt
+inner join `bigquery-public-data.austin_bikeshare.bikeshare_stations` bs
+on bs.station_id=bt.start_station_id
+group by start_station_name, year)
+
+--
+-- Pivot Operator rotates rows in columns 
+select * from cte
+
+Pivot(sum(total) for start_station_name in ('_64RaineySt','_1301ToomeyRoad','_2772E7th','_1155KingsburySt','_1308W6thSt','_800GuadalupeSt','_2322RedRiverStreet','_1789BrazosSt','_BartonSpringsRd','_601LavacaSt','_311Nueces','_425W4thStreet','_602WallerSt','_1881CongressAve','_206W14thSt','_700W12thSt','_1231WestAve','_991East5th','_1000Brazos','_400BartonSpringsRd','_300ERiversideDr','_124WCesarChavezSt','_2200WilliamBartonDr','_PresentedbyAustinParksFoundation','_BartonSpringsRd','_1RaineySt','_910TrinityStreet','_710W2212St','_5104East5thStreet','_1199SCongressAve','_111E8thSt','_1090CongressAve','_601LavacaSt','_750LavacaStreet','_PresentedbyTheAustinChronicle','_1530BartonSpringsRoad','_606TrinityStreet','_E21stSt','_E23rdSt','_600CongressAve','_310E11thSt','_212Trinity','_PresentedbyAustinEnergy','_1201SanJacintoBlvd','_2401LakeAustinBlvd','_1501E5thSt','_761RedRiverSt','_305SCongressAve','_FederalCourthousePlaza','_101RedRiverSt','_900BartonSpringsRd','_702E4thSt','_PresentedbyGravesDoughertyHearonMoody','_PresentedbyAustinParksFoundation','_915W23rdSt','_311NuecesSt','_652W3rdSt','_782SanJacintoBlvd','_672HendersonStreet','_698DavisSt','_411W17thSt','_2100GuadalupeSt','_2717RioGrandeSt','_585BrazosSt','_1285SanAntonioSt','_1611W5thSt','_699East10thStreet','_639ChalmersAvenue','_1601SanAntonioStreet','_2242GuadalupeSt','_PresentedbyWholeFoodsMarket','_151E2ndSt','_120W4thSt','_2414E2ndSt','_1153AngelinaStreet','_1909RosewoodAvenue','_1705E11thSt','_1106HollowCreekDr','_1316FestivalBeachRd','_2200SLakeshoreBlvd','_2525SouthLakeshoreBoulevard','_1819East4thSt','_2498E6thSt','_1106E11thSt','_1001E11thSt','_590MedinaSt','_2910E5thSt','_1825BartonSpringsRd','_600W26thSt','_1901SouthCongressAve','_101ElizabethStW','_603WestAve','_2120East6thSt','_3825LakeAustinBlvd','_900W22nd','_2308RioGrandeSt','_799SouthCongressAvenue','_180EDeanKeetonSt','_300WDeanKeetonSt','_2007UniversityAve','_2105VeteransDr'))
+
+-- Give Year and total for each address
