@@ -1,0 +1,7 @@
+--Copy and paste in Google Big Query Console https://console.cloud.google.com/bigquery
+-- Trim https://cloud.google.com/bigquery/docs/reference/standard-sql/string_functions#trim
+--Lower https://cloud.google.com/bigquery/docs/reference/standard-sql/string_functions#lower
+--replace https://cloud.google.com/bigquery/docs/reference/standard-sql/string_functions#replace
+
+SELECT text, replace(replace(trim(lower(text)),'"',""),"'","")
+ FROM `bigquery-public-data.hacker_news.comments` LIMIT 50
