@@ -1,0 +1,27 @@
+--using cte and row_number window function to find the first, midpoint and last record
+
+with cte as (select *, row_number()  over (partition by bikeid order by start_time) as bike_row_number
+FROM `bigquery-public-data.austin_bikeshare.bikeshare_trips` 
+where bikeid is not null
+order by bikeid),
+
+helper as(
+
+select bikeid, max(bike_row_number) as max_row
+from cte
+group by bikeid
+order by max_row desc)
+
+select * -- select the first time bike was rent out
+from cte
+where bike_row_number =1
+
+--select * --- uncoment to select the last time bike was rent out
+--from cte
+--inner join helper
+--on cte.bikeid = helper.bikeid and cte.bike_row_number = helper.max_row
+
+--select * --- uncoment to select the midpoint of time bike was rent out 
+--from cte
+--inner join helper
+--on cte.bikeid = helper.bikeid and cte.bike_row_number = helper.max_row/2
