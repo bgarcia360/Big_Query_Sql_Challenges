@@ -1,3 +1,5 @@
+--Copy and paste in Google Big Query Console https://console.cloud.google.com/bigquery
+
 --using cte and row_number window function to find the first, midpoint and last record
 
 with cte as (select *, row_number()  over (partition by bikeid order by start_time) as bike_row_number
