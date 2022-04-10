@@ -1,0 +1,9 @@
+--Cost is calculated duration by price rate from https://austin.bcycle.com/v2
+--Data is filtered by pay as you ride type of rental. 
+--The address is modified to include city and state for mapping graph
+
+select start_station_id,bikeid,trip_id,subscriber_type ,start_time, round((1.09+ duration_minutes*.23),2) as cost,concat(address,' , Austin , Tx') as address,council_district 
+FROM `bigquery-public-data.austin_bikeshare.bikeshare_trips` as trips
+inner join   `bigquery-public-data.austin_bikeshare.bikeshare_stations` as station
+on trips.start_station_id = station.station_id
+where (subscriber_type like '%Walk%' or subscriber_type like '%Single%' or subscriber_type like 'Pay%' )
